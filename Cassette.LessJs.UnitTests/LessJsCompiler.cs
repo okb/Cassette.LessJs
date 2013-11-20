@@ -14,19 +14,17 @@ using System.IO;
 using Cassette.IO;
 using Cassette.Utilities;
 using Moq;
-using Should;
-using Xunit;
+using NUnit.Framework;
 
 namespace Cassette.Stylesheets
 {
+    [TestFixture]
     public class LessJsCompiler_Compile
     {
-        private readonly CompileContext compileContext;
-        private readonly LessJsCompiler compiler;
-        private readonly Mock<IDirectory> directory;
-        private readonly Mock<IFile> file;
+        #region Setup/Teardown
 
-        public LessJsCompiler_Compile()
+        [SetUp]
+        public void SetUp()
         {
             file = new Mock<IFile>();
             directory = new Mock<IDirectory>();
@@ -44,7 +42,23 @@ namespace Cassette.Stylesheets
             compiler = new LessJsCompiler();
         }
 
-        [Fact]
+        #endregion
+
+        private CompileContext compileContext;
+        private LessJsCompiler compiler;
+        private Mock<IDirectory> directory;
+        private Mock<IFile> file;
+
+        private void StubFile(string path, string content)
+        {
+            var otherFile = new Mock<IFile>();
+            directory.Setup(d => d.GetFile(path)).Returns(otherFile.Object);
+            otherFile.SetupGet(f => f.Exists).Returns(true);
+            otherFile.Setup(f => f.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                .Returns(() => content.AsStream());
+        }
+
+        [Test]
         public void Can_Compile_LESS_that_imports_another_LESS_file()
         {
             var fileSystem = new FakeFileSystem
@@ -58,10 +72,10 @@ namespace Cassette.Stylesheets
                 "@import \"lib\";\nbody{ color: @color }",
                 compileContext
                 );
-            css.Output.ShouldEqual("body {\n  color: #ffffff;\n}\n");
+            Assert.That(css.Output, Is.EqualTo("body {\n  color: #ffffff;\n}\n"));
         }
 
-        [Fact]
+        [Test]
         public void Can_Compile_LESS_that_imports_another_LESS_file_from_different_directory()
         {
             var fileSystem = new FakeFileSystem
@@ -76,10 +90,10 @@ namespace Cassette.Stylesheets
                 "@import \"../bundle-b/lib.less\";\nbody{ color: @color }",
                 compileContext
                 );
-            css.Output.ShouldEqual("body {\n  color: #ff0000;\n}\n");
+            Assert.That(css.Output, Is.EqualTo("body {\n  color: #ff0000;\n}\n"));
         }
 
-        [Fact]
+        [Test]
         public void Can_Compile_LESS_with_two_levels_of_import()
         {
             var source = "@import \"../bundle-b/_lib.less\";\nbody{ color: @color }";
@@ -97,41 +111,43 @@ namespace Cassette.Stylesheets
                 source,
                 compileContext
                 );
-            css.Output.ShouldEqual("p {\n  height: 100px;\n}\nbody {\n  color: #ff0000;\n}\n");
+            Assert.That(css.Output, Is.EqualTo("p {\n  height: 100px;\n}\nbody {\n  color: #ff0000;\n}\n"));
         }
 
-        [Fact]
+        [Test]
         public void Compile_LESS_that_fails_parsing_throws_LessCompileException()
         {
             var exception =
                 Assert.Throws<LessJsCompileException>(delegate { compiler.Compile("#fail { - }", compileContext); });
-            exception.Message.ShouldContain("Unrecognised input on line 1 in file '~/test.less'");
+            Assert.That(exception.Message, Is.StringContaining("Unrecognised input on line 1 in file '~/test.less'"));
         }
 
-        [Fact]
+        [Test]
         public void Compile_LESS_with_unknown_mixin_throws_exception()
         {
             var less = "form { \nmargin-bottom: @baseline; }";
             var exception = Assert.Throws<LessJsCompileException>(delegate { compiler.Compile(less, compileContext); });
-            exception.Message.ShouldContain("variable @baseline is undefined on line 2 in file '~/test.less'");
+            Assert.That(exception.Message,
+                Is.StringContaining("variable @baseline is undefined on line 2 in file '~/test.less'"));
         }
 
-        [Fact]
+        [Test]
         public void Compile_converts_LESS_into_CSS()
         {
             var css = compiler.Compile("@color: #4d926f; #header { color: @color; }", compileContext);
-            css.Output.ShouldEqual("#header {\n  color: #4d926f;\n}\n");
+            Assert.That(css.Output, Is.EqualTo("#header {\n  color: #4d926f;\n}\n"));
         }
 
-        [Fact]
+        [Test]
         public void Compile_invalid_LESS_throws_exception()
         {
             var exception =
                 Assert.Throws<LessJsCompileException>(delegate { compiler.Compile("#unclosed_rule {", compileContext); });
-            exception.Message.ShouldContain("missing closing '}' on line 1 in file '~/test.less'");
+            Assert.That(exception.Message,
+                Is.StringContaining("missing closing '}' on line 1 in file '~/test.less'"));
         }
 
-        [Fact]
+        [Test]
         public void Import_less_file_that_uses_outer_variable()
         {
             var fileSystem = new FakeFileSystem
@@ -146,10 +162,10 @@ namespace Cassette.Stylesheets
                 "@objectpadding: 20px;\n@import \"Framework.less\";",
                 compileContext
                 );
-            result.Output.ShouldEqual(".object {\n  padding: 20px;\n}\n");
+            Assert.That(result.Output, Is.EqualTo(".object {\n  padding: 20px;\n}\n"));
         }
 
-        [Fact]
+        [Test]
         public void Importing_less_file_not_found_throws_useful_exception()
         {
             var root = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()));
@@ -161,7 +177,7 @@ namespace Cassette.Stylesheets
                 root.CreateSubdirectory("bundle-b");
                 compileContext.SourceFilePath = "~/test.less";
 
-                var exception = Record.Exception(delegate
+                var exception = Assert.Throws<LessJsCompileException>(() =>
                 {
                     compiler.Compile(
                         "@import \"../bundle-b/_MISSING.less\";\nbody{ color: @color }",
@@ -170,7 +186,7 @@ namespace Cassette.Stylesheets
                 });
                 // TODO: Patch dotless to include the imported file name!
                 // exception.Message.ShouldContain("_MISSING.less");
-                exception.Message.ShouldContain("~/test.less");
+                Assert.That(exception.Message, Is.StringContaining("~/test.less"));
             }
             finally
             {
@@ -178,7 +194,7 @@ namespace Cassette.Stylesheets
             }
         }
 
-        [Fact]
+        [Test]
         public void Using_mixin_from_imported_css_file_throws_exception()
         {
             StubFile("lib.css", ".mixin { color: red; }");
@@ -192,7 +208,7 @@ namespace Cassette.Stylesheets
             });
         }
 
-        [Fact]
+        [Test]
         public void Variable_defined_by_nested_import_is_replaced_in_CSS_output()
         {
             using (var path = new TempDirectory())
@@ -207,17 +223,8 @@ namespace Cassette.Stylesheets
                 compileContext.SourceFilePath = "~/main.less";
                 var css = compiler.Compile(file.OpenRead().ReadToEnd(), compileContext);
 
-                css.Output.ShouldContain("color: #ff0000;");
+                Assert.That(css.Output, Is.StringContaining("color: #ff0000;"));
             }
-        }
-
-        private void StubFile(string path, string content)
-        {
-            var otherFile = new Mock<IFile>();
-            directory.Setup(d => d.GetFile(path)).Returns(otherFile.Object);
-            otherFile.SetupGet(f => f.Exists).Returns(true);
-            otherFile.Setup(f => f.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                .Returns(() => content.AsStream());
         }
     }
 }

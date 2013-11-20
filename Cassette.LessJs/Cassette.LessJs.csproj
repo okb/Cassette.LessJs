@@ -63,29 +63,21 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxMin">
-      <HintPath>..\packages\AjaxMin.4.84.4790.14417\lib\net40\AjaxMin.dll</HintPath>
+    <Reference Include="AjaxMin, Version=5.3.5068.16458, Culture=neutral, PublicKeyToken=21ef50ce11b5d80f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AjaxMin.5.3.5068.16463\lib\net40\AjaxMin.dll</HintPath>
     </Reference>
-    <Reference Include="Cassette">
+    <Reference Include="Cassette, Version=2.3.0.21958, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Cassette.2.3.0\lib\net40-client\Cassette.dll</HintPath>
     </Reference>
     <Reference Include="Cassette.Views">
-      <HintPath>..\packages\Cassette.Views.1.2.1\lib\net40\Cassette.Views.dll</HintPath>
-    </Reference>
-    <Reference Include="Cassette.Web">
-      <HintPath>..\packages\Cassette.Web.1.2.1\lib\net40\Cassette.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <HintPath>..\packages\Cassette.Views.2.3.0\lib\net40\Cassette.Views.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebActivator">
-      <HintPath>..\packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CassetteConfiguration.cs" />

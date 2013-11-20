@@ -14,17 +14,17 @@ using Cassette.BundleProcessing;
 using Cassette.TinyIoC;
 using Cassette.Utilities;
 using Moq;
-using Should;
-using Xunit;
+using NUnit.Framework;
 
 namespace Cassette.Stylesheets
 {
+    [TestFixture]
     public class LessJsBundlePipelineModifier_Tests
     {
-        private readonly IBundlePipeline<StylesheetBundle> modifiedPipeline;
-        private readonly StylesheetPipeline originalPipeline;
+        #region Setup/Teardown
 
-        public LessJsBundlePipelineModifier_Tests()
+        [SetUp]
+        public void SetUp()
         {
             var minifier = Mock.Of<IStylesheetMinifier>();
             var urlGenerator = Mock.Of<IUrlGenerator>();
@@ -42,13 +42,18 @@ namespace Cassette.Stylesheets
             modifiedPipeline = modifier.Modify(originalPipeline);
         }
 
-        [Fact]
+        #endregion
+
+        private IBundlePipeline<StylesheetBundle> modifiedPipeline;
+        private StylesheetPipeline originalPipeline;
+
+        [Test]
         public void ModifiedPipelineIsSameObjectAsOriginalPipeline()
         {
-            modifiedPipeline.ShouldBeSameAs(originalPipeline);
+            Assert.That(modifiedPipeline, Is.EqualTo(originalPipeline));
         }
 
-        [Fact]
+        [Test]
         public void WhenModifiedPipelineProcessesBundle_ThenLessAssetHasCompileAssetTransformAdded()
         {
             var asset = new Mock<IAsset>();
@@ -62,7 +67,7 @@ namespace Cassette.Stylesheets
             asset.Verify(a => a.AddAssetTransformer(It.Is<IAssetTransformer>(t => t is CompileAsset)));
         }
 
-        [Fact]
+        [Test]
         public void WhenModifiedPipelineProcessesBundle_ThenReferenceInLessAssetIsParsed()
         {
             var asset = new Mock<IAsset>();

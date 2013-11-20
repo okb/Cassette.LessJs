@@ -11,13 +11,14 @@
 
 using Cassette.Utilities;
 using Moq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Cassette.Stylesheets
 {
+    [TestFixture]
     public class ParseLessReferences_Tests
     {
-        [Fact]
+        [Test]
         public void ProcessAddsReferencesToLessAssetInBundle()
         {
             var asset = new Mock<IAsset>();

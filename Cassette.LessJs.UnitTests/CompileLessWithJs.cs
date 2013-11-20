@@ -11,13 +11,14 @@
 
 using Cassette.BundleProcessing;
 using Moq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Cassette.Stylesheets
 {
+    [TestFixture]
     public class CompileLessWithJs_Tests
     {
-        [Fact]
+        [Test]
         public void GivenACompiler_WhenProcessCalled_ThenCompileAssetTransformerAddedToLessAsset()
         {
             var processor = new CompileLessWithJs(Mock.Of<ILessJsCompiler>(), new CassetteSettings());
@@ -31,7 +32,7 @@ namespace Cassette.Stylesheets
             asset.Verify(a => a.AddAssetTransformer(It.Is<IAssetTransformer>(at => at is CompileAsset)));
         }
 
-        [Fact]
+        [Test]
         public void GivenACompiler_WhenProcessCalled_ThenCompileAssetTransformerNotAddedToCssAsset()
         {
             var processor = new CompileLessWithJs(Mock.Of<ILessJsCompiler>(), new CassetteSettings());

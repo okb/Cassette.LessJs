@@ -3,16 +3,13 @@
   <metadata>
     <id>Cassette</id>
     <version>2.3.0</version>
-    <title>Cassette</title>
     <authors>Andrew Davey</authors>
     <owners>Andrew Davey</owners>
     <licenseUrl>http://getcassette.net/licensing</licenseUrl>
     <projectUrl>http://getcassette.net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Important: This is just the core library for Cassette. You probably want to install the Cassette.Aspnet package for ASP.NET support.</description>
-    <releaseNotes />
     <copyright>© 2011 Andrew Davey</copyright>
-    <language />
     <tags>web javascript coffeescript css html templates asp.net</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.5">
