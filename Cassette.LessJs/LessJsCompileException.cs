@@ -2,6 +2,7 @@
 
 namespace Cassette.Stylesheets
 {
+    [Serializable]
     public class LessJsCompileException : Exception
     {
         public LessJsCompileException(string message, Exception innerException)
