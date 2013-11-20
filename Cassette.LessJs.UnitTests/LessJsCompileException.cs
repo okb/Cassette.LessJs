@@ -1,15 +1,25 @@
-﻿using Should;
-using Xunit;
+﻿#region License
+
+// --------------------------------------------------
+// Copyright © OKB. All Rights Reserved.
+// 
+// This software is proprietary information of OKB.
+// USE IS SUBJECT TO LICENSE TERMS.
+// --------------------------------------------------
+
+#endregion
+
+using NUnit.Framework;
 
 namespace Cassette.Stylesheets
 {
+    [TestFixture]
     public class LessJsCompileException_Tests
     {
-        [Fact]
+        [Test]
         public void LessCompileExceptionConstructorAcceptsMessage()
         {
-            new LessJsCompileException("test").Message.ShouldEqual("test");
+            Assert.That(new LessJsCompileException("test").Message, Is.EqualTo("test"));
         }
     }
 }
-

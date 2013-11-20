@@ -1,4 +1,15 @@
-﻿using System;
+﻿#region License
+
+// --------------------------------------------------
+// Copyright © OKB. All Rights Reserved.
+// 
+// This software is proprietary information of OKB.
+// USE IS SUBJECT TO LICENSE TERMS.
+// --------------------------------------------------
+
+#endregion
+
+using System;
 using System.IO;
 using Cassette.IO;
 using Cassette.Utilities;
@@ -10,6 +21,11 @@ namespace Cassette.Stylesheets
 {
     public class LessJsCompiler_Compile
     {
+        private readonly CompileContext compileContext;
+        private readonly LessJsCompiler compiler;
+        private readonly Mock<IDirectory> directory;
+        private readonly Mock<IFile> file;
+
         public LessJsCompiler_Compile()
         {
             file = new Mock<IFile>();
@@ -28,49 +44,6 @@ namespace Cassette.Stylesheets
             compiler = new LessJsCompiler();
         }
 
-        readonly Mock<IFile> file;
-        readonly Mock<IDirectory> directory;
-        readonly CompileContext compileContext;
-        readonly LessJsCompiler compiler;
-
-        [Fact]
-        public void Compile_converts_LESS_into_CSS()
-        {
-            var css = compiler.Compile("@color: #4d926f; #header { color: @color; }", compileContext);
-            css.Output.ShouldEqual("#header {\n  color: #4d926f;\n}\n");
-        }
-
-        [Fact]
-        public void Compile_invalid_LESS_throws_exception()
-        {
-            var exception = Assert.Throws<LessJsCompileException>(delegate
-            {
-                compiler.Compile("#unclosed_rule {", compileContext);
-            });
-            exception.Message.ShouldContain("missing closing '}' on line 1 in file '~/test.less'");
-        }
-
-        [Fact]
-        public void Compile_LESS_with_unknown_mixin_throws_exception()
-        {
-            var less = "form { \nmargin-bottom: @baseline; }";
-            var exception = Assert.Throws<LessJsCompileException>(delegate
-            {
-                compiler.Compile(less, compileContext);
-            });
-            exception.Message.ShouldContain("variable @baseline is undefined on line 2 in file '~/test.less'");
-        }
-
-        [Fact]
-        public void Compile_LESS_that_fails_parsing_throws_LessCompileException()
-        {
-            var exception = Assert.Throws<LessJsCompileException>(delegate
-            {
-                compiler.Compile("#fail { - }", compileContext);
-            });
-            exception.Message.ShouldContain("Unrecognised input on line 1 in file '~/test.less'");
-        }
-
         [Fact]
         public void Can_Compile_LESS_that_imports_another_LESS_file()
         {
@@ -84,7 +57,7 @@ namespace Cassette.Stylesheets
             var css = compiler.Compile(
                 "@import \"lib\";\nbody{ color: @color }",
                 compileContext
-            );
+                );
             css.Output.ShouldEqual("body {\n  color: #ffffff;\n}\n");
         }
 
@@ -102,7 +75,7 @@ namespace Cassette.Stylesheets
             var css = compiler.Compile(
                 "@import \"../bundle-b/lib.less\";\nbody{ color: @color }",
                 compileContext
-            );
+                );
             css.Output.ShouldEqual("body {\n  color: #ff0000;\n}\n");
         }
 
@@ -113,9 +86,9 @@ namespace Cassette.Stylesheets
 
             var fileSystem = new FakeFileSystem
             {
-                { "~/_base.less", "@size: 100px;" },
-                { "~/bundle-b/_lib.less", "@import \"../_base.less\";\n@color: #ff0000; p { height: @size; }" },
-                { "~/bundle-a/test.less", source }
+                {"~/_base.less", "@size: 100px;"},
+                {"~/bundle-b/_lib.less", "@import \"../_base.less\";\n@color: #ff0000; p { height: @size; }"},
+                {"~/bundle-a/test.less", source}
             };
             compileContext.SourceFilePath = "~/bundle-a/test.less";
             compileContext.RootDirectory = fileSystem;
@@ -123,8 +96,57 @@ namespace Cassette.Stylesheets
             var css = compiler.Compile(
                 source,
                 compileContext
-            );
+                );
             css.Output.ShouldEqual("p {\n  height: 100px;\n}\nbody {\n  color: #ff0000;\n}\n");
+        }
+
+        [Fact]
+        public void Compile_LESS_that_fails_parsing_throws_LessCompileException()
+        {
+            var exception =
+                Assert.Throws<LessJsCompileException>(delegate { compiler.Compile("#fail { - }", compileContext); });
+            exception.Message.ShouldContain("Unrecognised input on line 1 in file '~/test.less'");
+        }
+
+        [Fact]
+        public void Compile_LESS_with_unknown_mixin_throws_exception()
+        {
+            var less = "form { \nmargin-bottom: @baseline; }";
+            var exception = Assert.Throws<LessJsCompileException>(delegate { compiler.Compile(less, compileContext); });
+            exception.Message.ShouldContain("variable @baseline is undefined on line 2 in file '~/test.less'");
+        }
+
+        [Fact]
+        public void Compile_converts_LESS_into_CSS()
+        {
+            var css = compiler.Compile("@color: #4d926f; #header { color: @color; }", compileContext);
+            css.Output.ShouldEqual("#header {\n  color: #4d926f;\n}\n");
+        }
+
+        [Fact]
+        public void Compile_invalid_LESS_throws_exception()
+        {
+            var exception =
+                Assert.Throws<LessJsCompileException>(delegate { compiler.Compile("#unclosed_rule {", compileContext); });
+            exception.Message.ShouldContain("missing closing '}' on line 1 in file '~/test.less'");
+        }
+
+        [Fact]
+        public void Import_less_file_that_uses_outer_variable()
+        {
+            var fileSystem = new FakeFileSystem
+            {
+                {"~/Framework.less", ".object { padding: @objectpadding; }"},
+                "~/test.less"
+            };
+            compileContext.RootDirectory = fileSystem;
+            compileContext.SourceFilePath = "~/test.less";
+
+            var result = compiler.Compile(
+                "@objectpadding: 20px;\n@import \"Framework.less\";",
+                compileContext
+                );
+            result.Output.ShouldEqual(".object {\n  padding: 20px;\n}\n");
         }
 
         [Fact]
@@ -144,7 +166,7 @@ namespace Cassette.Stylesheets
                     compiler.Compile(
                         "@import \"../bundle-b/_MISSING.less\";\nbody{ color: @color }",
                         compileContext
-                    );
+                        );
                 });
                 // TODO: Patch dotless to include the imported file name!
                 // exception.Message.ShouldContain("_MISSING.less");
@@ -166,26 +188,8 @@ namespace Cassette.Stylesheets
                 compiler.Compile(
                     "@import \"lib.css\";\nbody{ .mixin; }",
                     compileContext
-                );
+                    );
             });
-        }
-
-        [Fact]
-        public void Import_less_file_that_uses_outer_variable()
-        {
-            var fileSystem = new FakeFileSystem
-            {
-                {"~/Framework.less", ".object { padding: @objectpadding; }" },
-                "~/test.less"
-            };
-            compileContext.RootDirectory = fileSystem;
-            compileContext.SourceFilePath = "~/test.less";
-
-            var result = compiler.Compile(
-                "@objectpadding: 20px;\n@import \"Framework.less\";",
-                compileContext
-            );
-            result.Output.ShouldEqual(".object {\n  padding: 20px;\n}\n");
         }
 
         [Fact]
@@ -207,13 +211,13 @@ namespace Cassette.Stylesheets
             }
         }
 
-        void StubFile(string path, string content)
+        private void StubFile(string path, string content)
         {
             var otherFile = new Mock<IFile>();
             directory.Setup(d => d.GetFile(path)).Returns(otherFile.Object);
             otherFile.SetupGet(f => f.Exists).Returns(true);
             otherFile.Setup(f => f.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                     .Returns(() => content.AsStream());
+                .Returns(() => content.AsStream());
         }
     }
 }

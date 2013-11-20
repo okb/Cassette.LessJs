@@ -1,4 +1,15 @@
-﻿using Cassette.Utilities;
+﻿#region License
+
+// --------------------------------------------------
+// Copyright © OKB. All Rights Reserved.
+// 
+// This software is proprietary information of OKB.
+// USE IS SUBJECT TO LICENSE TERMS.
+// --------------------------------------------------
+
+#endregion
+
+using Cassette.Utilities;
 using Moq;
 using Xunit;
 
@@ -18,7 +29,7 @@ namespace Cassette.Stylesheets
 // @reference '../test/another3.less';
 ";
             asset.Setup(a => a.OpenStream())
-                 .Returns(lessSource.AsStream());
+                .Returns(lessSource.AsStream());
             var bundle = new StylesheetBundle("~");
             bundle.Assets.Add(asset.Object);
 
@@ -31,4 +42,3 @@ namespace Cassette.Stylesheets
         }
     }
 }
-
