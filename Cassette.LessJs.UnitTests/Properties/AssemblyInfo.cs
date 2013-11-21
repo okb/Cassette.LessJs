@@ -1,15 +1,4 @@
-﻿#region License
-
-// --------------------------------------------------
-// Copyright © OKB. All Rights Reserved.
-// 
-// This software is proprietary information of OKB.
-// USE IS SUBJECT TO LICENSE TERMS.
-// --------------------------------------------------
-
-#endregion
-
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 

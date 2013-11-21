@@ -1,15 +1,4 @@
-﻿#region License
-
-// --------------------------------------------------
-// Copyright © OKB. All Rights Reserved.
-// 
-// This software is proprietary information of OKB.
-// USE IS SUBJECT TO LICENSE TERMS.
-// --------------------------------------------------
-
-#endregion
-
-using Cassette.Utilities;
+﻿using Cassette.Utilities;
 using Moq;
 using NUnit.Framework;
 

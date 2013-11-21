@@ -5,8 +5,8 @@ namespace Cassette.Stylesheets
 {
     public class CompileLessWithJs : IBundleProcessor<StylesheetBundle>
     {
-        readonly ILessJsCompiler lessCompiler;
-        readonly CassetteSettings settings;
+        private readonly ILessJsCompiler lessCompiler;
+        private readonly CassetteSettings settings;
 
         public CompileLessWithJs(ILessJsCompiler lessCompiler, CassetteSettings settings)
         {

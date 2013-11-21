@@ -1,15 +1,4 @@
-﻿#region License
-
-// --------------------------------------------------
-// Copyright © OKB. All Rights Reserved.
-// 
-// This software is proprietary information of OKB.
-// USE IS SUBJECT TO LICENSE TERMS.
-// --------------------------------------------------
-
-#endregion
-
-using System.IO;
+﻿using System.IO;
 using Cassette.BundleProcessing;
 using Cassette.TinyIoC;
 using Cassette.Utilities;
