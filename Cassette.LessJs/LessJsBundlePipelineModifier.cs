@@ -8,7 +8,7 @@ namespace Cassette.Stylesheets
         {
             var index = pipeline.IndexOf<ParseCssReferences>();
             pipeline.Insert<ParseJsLessReferences>(index + 1);
-            pipeline.Insert<CompileLessWithJs>(index+2);
+            pipeline.Insert<CompileLessWithJs>(index + 2);
 
             return pipeline;
         }
