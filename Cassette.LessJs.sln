@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{56DC70
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A4B52CCD-6A26-4D57-AA24-0157AC04C79C}"
 	ProjectSection(SolutionItems) = preProject
-		Cassette.Less.nuspec = Cassette.Less.nuspec
+		Cassette.LessJs.nuspec = Cassette.LessJs.nuspec
 	EndProjectSection
 EndProject
 Global

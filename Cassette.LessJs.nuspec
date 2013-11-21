@@ -2,21 +2,22 @@
 <!-- Cassette Shared Nuspec File; all packges share this -->
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <version>$version$</version>
+    <version>1.0.0</version>
     <authors>Andrew Davey</authors>
     <owners>Andrew Davey</owners>
     <copyright>© 2011 Andrew Davey</copyright>
     <licenseUrl>http://getcassette.net/licensing</licenseUrl>
     <projectUrl>http://getcassette.net/</projectUrl>
-    <tags>web javascript coffeescript css html templates asp.net</tags>
-    <id>Cassette.Less</id>
-    <description>Less CSS compiler support for Cassette.</description>
+    <tags>web less javascript coffeescript css html templates asp.net</tags>
+    <id>Cassette.LessJs</id>
+    <description>Alternative Less CSS compiler support for Cassette.
+    Uses official less.js as parser, handles twitter bootrstrap</description>
     <dependencies>
-      <dependency id="Cassette" version="$version$" />
-      <dependency id="DotlessClientOnly" version="1.3" />
+      <dependency id="Cassette"/>
+      <dependency id="Ajaxmin" version="5.3.5068.16463" />
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\Cassette.Less.dll" target="lib\net40-client" />
+    <file src="Cassette.LessJs\bin\Release\NET40\Cassette.LessJs.dll" target="lib\net40" />
   </files>
 </package>
