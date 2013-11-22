@@ -29,19 +29,19 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\$(Configuration)\$(TargetFrameworkConstant)</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <BaseIntermediateOutputPath>obj\$(Configuration)\$(TargetFrameworkConstant)</BaseIntermediateOutputPath>
-    <DefineConstants>DEBUG;TRACE;$(TargetFrameworkConstant)</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\$(Configuration)\$(TargetFrameworkConstant)</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <BaseIntermediateOutputPath>obj\$(Configuration)\$(TargetFrameworkConstant)</BaseIntermediateOutputPath>
-    <DefineConstants>TRACE;$(TargetFrameworkConstant)</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -95,7 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>

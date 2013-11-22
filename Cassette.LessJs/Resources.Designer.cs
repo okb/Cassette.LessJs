@@ -22,7 +22,7 @@ namespace Cassette.Stylesheets {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Cassette.Stylesheets {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Cassette.Stylesheets.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace Cassette.Stylesheets {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Cassette.Stylesheets {
         /// <summary>
         ///   Looks up a localized string similar to (function(definition){if(typeof define==&quot;function&quot;){define(definition)}else if(typeof YUI==&quot;function&quot;){YUI.add(&quot;es5&quot;,definition)}else{definition()}})(function(){function Empty(){}if(!Function.prototype.bind){Function.prototype.bind=function bind(that){var target=this;if(typeof target!=&quot;function&quot;){throw new TypeError(&quot;Function.prototype.bind called on incompatible &quot;+target)}var args=_Array_slice_.call(arguments,1);var bound=function(){if(this instanceof bound){var result=target.apply(this,args.concat(_Array_ [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string es5 {
+        public static string es5 {
             get {
                 return ResourceManager.GetString("es5", resourceCulture);
             }
@@ -80,7 +80,7 @@ namespace Cassette.Stylesheets {
         /// * @licence
         /// */(function(e,t){function n(t){return e.less[t.split(&quot;/&quot;)[1]]}function f(){r.env===&quot;development&quot;?(r.optimization=0,r.watchTimer=setInterval(function(){r.watchMode&amp;&amp;g(function(e,t,n,i,s){e?k(e,i.href):t&amp;&amp;S(t.toCSS(r),i,s.lastModified)})},r.poll)):r.optimization=3}function m(){var e=document.getElementsByTagName(&quot;style&quot;);for(var t=0;t&lt;e.length;t++ [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string less {
+        public static string less {
             get {
                 return ResourceManager.GetString("less", resourceCulture);
             }
@@ -106,7 +106,7 @@ namespace Cassette.Stylesheets {
         ///        protocol: &apos;http:&apos;,      // vank: added to support development env setting
         ///        hostname: &apos;localh [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string lessc {
+        public static string lessc {
             get {
                 return ResourceManager.GetString("lessc", resourceCulture);
             }
