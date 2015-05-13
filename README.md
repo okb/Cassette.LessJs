@@ -1,6 +1,9 @@
 Cassette.LessJs
 ===============
 
+NOT MAINTAINED
+==============
+
 Version of the Less compiler for Cassette.Net using the original Js Libraries
 
 Cassette.Less uses [dotless](https://github.com/dotless/dotless).  This is a great library and supports mono,
